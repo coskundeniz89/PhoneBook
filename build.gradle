@@ -1,5 +1,5 @@
 apply plugin: 'java'
-//deneme
+//Coşkun deniz
 sourceCompatibility = 1.5
 version = '1.0'
 
