@@ -1,12 +1,77 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "http://download.java.net/maven/2"
+        }
+        maven { url 'http://repo.spring.io/plugins-release' }
+    }
+
+    dependencies {
+        classpath 'org.gradle.api.plugins:gradle-tomcat-plugin:0.9.9'
+//        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
+//        classpath 'org.gradle.api.plugins:gradle-clover-plugin:0.8.2'
+//        classpath 'me.champeau.gradle:gradle-javadoc-hotfix-plugin:0.1'
+//        classpath 'com.bmuschko:gradle-clover-plugin:2.0.1'
+    }
+}
+
+apply plugin: 'war'
+apply plugin: 'tomcat'
 apply plugin: 'java'
-//Coşkun deniz
+//apply plugin: 'propdeps'
+apply plugin: 'idea'
+
 sourceCompatibility = 1.5
 version = '1.0'
+
+
+
+
+[tomcatRun, tomcatRunWar, tomcatStop]*.stopPort = 8090
+[tomcatRun, tomcatRunWar, tomcatStop]*.stopKey = 'foo'
+tomcatRunWar.contextPath = '/'
+
 
 repositories {
     mavenCentral()
 }
 
+ext {
+    tomcatVersion = '7.0.42'
+}
+
 dependencies {
+
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+    tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
+        exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
+    }
+
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+    runtime 'javax.servlet:jstl:1.2'
+
+    //oracle
+    compile files('src/main/resources/libs/ojdbc14.jar')
+
+    compile 'org.springframework.data:spring-data-jpa:1.5.1.RELEASE'
+    compile 'org.springframework:spring-web:4.1.6.RELEASE'
+    compile 'org.springframework:spring-webmvc:4.1.6.RELEASE'
+    compile 'org.thymeleaf:thymeleaf:2.1.4.RELEASE'
+    compile 'org.thymeleaf:thymeleaf-spring4:2.1.4.RELEASE'
+    compile 'javax.persistence:persistence-api:1.0.2'
+
+
+    compile 'commons-dbcp:commons-dbcp:1.2.2'
+
+
+
+    compile 'org.springframework.data:spring-data-jpa:1.8.0.RELEASE'
     testCompile group: 'junit', name: 'junit', version: '4.11'
+
+    compile "org.slf4j:slf4j-api:1.6.4"
+    compile "org.slf4j:slf4j-log4j12:1.6.4"
+    compile 'log4j:log4j:1.2.14'
+
 }
