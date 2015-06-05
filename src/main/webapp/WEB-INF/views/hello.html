@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Spring MVC Thymeleaf Example</title>
+</head>
+<body>
+aaa
+<table data-th-if="${not #lists.isEmpty(contacts)}">
+    <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+    </tr>
+    <tr data-th-each="contact : ${contacts}">
+        <td data-th-text="${contact.lastname}">The first name</td>
+        <td data-th-text="${contact.firstname}">The last name</td>
+    </tr>
+</table>
+</body>
+</html>

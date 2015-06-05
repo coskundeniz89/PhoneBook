@@ -9,23 +9,19 @@ buildscript {
 
     dependencies {
         classpath 'org.gradle.api.plugins:gradle-tomcat-plugin:0.9.9'
-//        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
+        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
 //        classpath 'org.gradle.api.plugins:gradle-clover-plugin:0.8.2'
 //        classpath 'me.champeau.gradle:gradle-javadoc-hotfix-plugin:0.1'
 //        classpath 'com.bmuschko:gradle-clover-plugin:2.0.1'
     }
 }
-
 apply plugin: 'war'
 apply plugin: 'tomcat'
 apply plugin: 'java'
-//apply plugin: 'propdeps'
+apply plugin: 'propdeps'
+apply plugin: 'propdeps-maven'
+apply plugin: 'propdeps-idea'
 apply plugin: 'idea'
-
-sourceCompatibility = 1.5
-version = '1.0'
-
-
 
 
 [tomcatRun, tomcatRunWar, tomcatStop]*.stopPort = 8090
@@ -38,7 +34,12 @@ repositories {
 }
 
 ext {
+    servletVersion = '3.1.0'
     tomcatVersion = '7.0.42'
+    springVersion = '4.0.6.RELEASE'
+    springSecurityVersion = '3.2.4.RELEASE'
+    thymeleafVersion = '2.1.3.RELEASE'
+    slf4jVersion = '1.7.5'
 }
 
 dependencies {
@@ -49,29 +50,49 @@ dependencies {
         exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
     }
 
-    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
-    runtime 'javax.servlet:jstl:1.2'
-
+    provided "javax.servlet:javax.servlet-api:${servletVersion}"
     //oracle
-    compile files('src/main/resources/libs/ojdbc14.jar')
+    compile files('src/main/resources/lib/ojdbc14.jar')
 
+    // spring
+    compile "org.springframework:spring-orm:$springVersion"
+    compile "org.springframework:spring-aop:$springVersion"
+    compile "org.springframework:spring-webmvc:$springVersion"
+    compile "org.springframework:spring-oxm:$springVersion"
     compile 'org.springframework.data:spring-data-jpa:1.5.1.RELEASE'
-    compile 'org.springframework:spring-web:4.1.6.RELEASE'
-    compile 'org.springframework:spring-webmvc:4.1.6.RELEASE'
-    compile 'org.thymeleaf:thymeleaf:2.1.4.RELEASE'
-    compile 'org.thymeleaf:thymeleaf-spring4:2.1.4.RELEASE'
-    compile 'javax.persistence:persistence-api:1.0.2'
 
+// spring aop
+    compile "org.springframework:spring-aop:$springVersion"
+    compile 'cglib:cglib-nodep:3.1'
+    compile 'org.aspectj:aspectjweaver:1.8.0'
+
+    // thymeleaf
+    compile "org.thymeleaf:thymeleaf-spring3:$thymeleafVersion"
+
+    // hibernate
+    compile 'org.hibernate:hibernate-core:4.3.5.Final'
+    compile 'org.hibernate:hibernate-entitymanager:4.3.6.Final'
+
+    compile 'commons-lang:commons-lang:2.6'
+
+    compile 'javax.validation:validation-api:1.1.0.Final'
+    compile 'org.hibernate:hibernate-validator:5.0.1.Final'
+
+    compile 'joda-time:joda-time:2.3'
+
+    //logging
+    compile "org.slf4j:slf4j-api:${slf4jVersion}"
+    runtime "org.slf4j:slf4j-log4j12:${slf4jVersion}"
+
+    compile 'postgresql:postgresql:9.1-901.jdbc4'
 
     compile 'commons-dbcp:commons-dbcp:1.2.2'
 
+    //TEST
+    testCompile 'org.springframework:spring-test:3.2.3.RELEASE'
+    testCompile 'junit:junit:4.11'
+    testCompile "org.mockito:mockito-core:1.9.5"
+    testCompile "org.hamcrest:hamcrest-library:1.3"
 
-
-    compile 'org.springframework.data:spring-data-jpa:1.8.0.RELEASE'
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-
-    compile "org.slf4j:slf4j-api:1.6.4"
-    compile "org.slf4j:slf4j-log4j12:1.6.4"
-    compile 'log4j:log4j:1.2.14'
 
 }
