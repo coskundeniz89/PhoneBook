@@ -2,11 +2,7 @@ package cd.configuration.init;
 
 import cd.configuration.config.AppConfig;
 import cd.configuration.config.WebMvcConfig;
-import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
-import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
-import javax.servlet.Filter;
 
 public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
@@ -41,10 +37,10 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
    * Spring security tanımlar.
    * @return Filter[]
    */
-  @Override
-  protected Filter[] getServletFilters() {
-    return new Filter[]{
-        new DelegatingFilterProxy("springSecurityFilterChain"),
-        new OpenEntityManagerInViewFilter()};
-  }
+//  @Override
+//  protected Filter[] getServletFilters() {
+//    return new Filter[]{
+//        new DelegatingFilterProxy("springSecurityFilterChain"),
+//        new OpenEntityManagerInViewFilter()};
+//  }
 }

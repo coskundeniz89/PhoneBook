@@ -54,6 +54,9 @@ dependencies {
     //oracle
     compile files('src/main/resources/lib/ojdbc14.jar')
 
+    //mockito
+    'org.mockito:mockito-all:1.10.19'
+
     // spring
     compile "org.springframework:spring-orm:$springVersion"
     compile "org.springframework:spring-aop:$springVersion"

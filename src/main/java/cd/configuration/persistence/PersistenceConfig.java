@@ -2,24 +2,18 @@ package cd.configuration.persistence;
 
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
-import org.springframework.jdbc.datasource.init.DataSourceInitializer;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.hibernate4.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -28,7 +22,7 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "cd.entities")
+@EnableJpaRepositories(basePackages = "cd.*")
 public class PersistenceConfig {
 
   /* Environment */
@@ -39,15 +33,26 @@ public class PersistenceConfig {
   @Value("${init-db:false}")
   private String initDatabase;
 
+  @Bean
+  JpaTransactionManager jpaTransactionManager(){
+    JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+    jpaTransactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+    return jpaTransactionManager;
+  }
+
+
   /**
    * Transaction Manager.
    * @return PlatformTransactionManager
    */
-  @Bean
-  public PlatformTransactionManager transactionManager() {
-    EntityManagerFactory factory = entityManagerFactory().getObject();
-    return new JpaTransactionManager(factory);
-  }
+//  @Bean
+//  public PlatformTransactionManager transactionManager() {
+//    EntityManagerFactory factory = entityManagerFactory().getObject();
+//    return new JpaTransactionManager(factory);
+//  }
+
+  private static final String PROPERTY_NAME_HIBERNATE_FORMAT_SQL = "hibernate.format_sql";
+  private static final String PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY = "spring.jpa.hibernate.naming_strategy";
 
   /**
    * Database türünü ve model classların olduğu paketleri ayarlar.
@@ -57,23 +62,22 @@ public class PersistenceConfig {
   public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
     LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 
-    HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-    vendorAdapter.setGenerateDdl(Boolean.TRUE);
-    vendorAdapter.setShowSql(Boolean.TRUE);
 
     factory.setDataSource(dataSource());
-    factory.setJpaVendorAdapter(vendorAdapter);
+    factory.setPersistenceProviderClass(HibernatePersistenceProvider.class);
     factory.setPackagesToScan("cd.entities");
 
     Properties jpaProperties = new Properties();
     jpaProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
+    jpaProperties.put(PROPERTY_NAME_HIBERNATE_FORMAT_SQL, env.getProperty(PROPERTY_NAME_HIBERNATE_FORMAT_SQL));
+    jpaProperties.put(PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY));
     jpaProperties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
     jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-    jpaProperties.put("hibernate.default_schema", env.getProperty("hibernate.default_schema"));
+    //jpaProperties.put("hibernate.default_schema", env.getProperty("hibernate.default_schema"));
     factory.setJpaProperties(jpaProperties);
 
-    factory.afterPropertiesSet();
-    factory.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
+//    factory.afterPropertiesSet();
+//    factory.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
     return factory;
   }
 
@@ -90,7 +94,7 @@ public class PersistenceConfig {
    * Database konfigürasyonunu belirtir.
    * @return  DataSource
    */
-  @Bean
+  @Bean(destroyMethod = "close")
   public DataSource dataSource() {
     BasicDataSource dataSource = new BasicDataSource();
     dataSource.setDriverClassName(env.getProperty("db.driverClassName"));
@@ -104,8 +108,8 @@ public class PersistenceConfig {
    * Mevcut bir test databse için gerekli ayarlamaları yapar.
    * @return DataSourceInitializer
    */
-  @Bean
-  public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
+ /* @Bean
+   public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
     DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
     dataSourceInitializer.setDataSource(dataSource);
     ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
@@ -113,5 +117,5 @@ public class PersistenceConfig {
     dataSourceInitializer.setDatabasePopulator(databasePopulator);
     dataSourceInitializer.setEnabled(Boolean.parseBoolean(initDatabase));
     return dataSourceInitializer;
-  }
+  }*/
 }
