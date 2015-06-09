@@ -1,4 +1,4 @@
-package cd.configuration.persistence;
+package cd.config;
 
 
 import org.apache.commons.dbcp.BasicDataSource;
@@ -17,9 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-/**
- * @author bilal.sezgin
- */
+
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "cd.*")
@@ -34,7 +32,7 @@ public class PersistenceConfig {
   private String initDatabase;
 
   @Bean
-  JpaTransactionManager jpaTransactionManager(){
+  JpaTransactionManager jpaTransactionManager() {
     JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
     jpaTransactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
     return jpaTransactionManager;
@@ -43,6 +41,7 @@ public class PersistenceConfig {
 
   /**
    * Transaction Manager.
+   *
    * @return PlatformTransactionManager
    */
 //  @Bean
@@ -56,6 +55,7 @@ public class PersistenceConfig {
 
   /**
    * Database türünü ve model classların olduğu paketleri ayarlar.
+   *
    * @return LocalContainerEntityManagerFactoryBean
    */
   @Bean
@@ -83,6 +83,7 @@ public class PersistenceConfig {
 
   /**
    * Hibernate Exception Translator.
+   *
    * @return HibernateExceptionTranslator
    */
   @Bean
@@ -92,7 +93,8 @@ public class PersistenceConfig {
 
   /**
    * Database konfigürasyonunu belirtir.
-   * @return  DataSource
+   *
+   * @return DataSource
    */
   @Bean(destroyMethod = "close")
   public DataSource dataSource() {

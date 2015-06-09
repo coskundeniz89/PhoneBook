@@ -10,9 +10,6 @@ buildscript {
     dependencies {
         classpath 'org.gradle.api.plugins:gradle-tomcat-plugin:0.9.9'
         classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
-//        classpath 'org.gradle.api.plugins:gradle-clover-plugin:0.8.2'
-//        classpath 'me.champeau.gradle:gradle-javadoc-hotfix-plugin:0.1'
-//        classpath 'com.bmuschko:gradle-clover-plugin:2.0.1'
     }
 }
 apply plugin: 'war'

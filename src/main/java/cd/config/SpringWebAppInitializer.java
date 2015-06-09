@@ -1,7 +1,5 @@
-package cd.configuration.init;
+package cd.config;
 
-import cd.configuration.config.AppConfig;
-import cd.configuration.config.WebMvcConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -12,7 +10,7 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
    */
   @Override
   protected Class<?>[] getRootConfigClasses() {
-    return new Class<?>[]{AppConfig.class};
+    return new Class<?>[]{AppConfig.class,PersistenceConfig.class};
   }
 
   /**
@@ -23,6 +21,7 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
   protected Class<?>[] getServletConfigClasses() {
     return new Class<?>[]{WebMvcConfig.class};
   }
+
 
   /**
    * get Servlet Mappings.

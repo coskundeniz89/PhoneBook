@@ -1,4 +1,4 @@
-package cd.configuration.config;
+package cd.config;
 
 
 import org.springframework.context.MessageSource;
@@ -26,8 +26,8 @@ import java.util.Properties;
  * @author bilal.sezgin
  */
 @Configuration
-@ComponentScan(basePackages = {"cd"})
 @EnableWebMvc
+@ComponentScan(basePackages = { "cd.controller"})
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
   /**
@@ -86,6 +86,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
   /**
    * View sayfa çözümlemesi ayarları.
+   *
    * @return ServletContextTemplateResolver
    */
   @Bean
@@ -101,6 +102,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
   /**
    * Spring template için kullanılan bean.
+   *
    * @return SpringTemplateEngine
    */
   @Bean
@@ -112,6 +114,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
   /**
    * Thymeleaf view resolver yapısının ayarlamalarını yapar.
+   *
    * @return ViewResolver
    */
   @Bean
@@ -149,6 +152,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
   /**
    * Cookie'de tutulan verileri ayarlar.
+   *
    * @return LocaleResolver
    */
   @Bean
