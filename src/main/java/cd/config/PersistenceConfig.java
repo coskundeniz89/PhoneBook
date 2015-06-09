@@ -6,6 +6,7 @@ import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -20,10 +21,10 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "cd.*")
+@ComponentScan(basePackages = {"cd.model","cd.services"})
+@EnableJpaRepositories(basePackages = {"cd.repositories"})
 public class PersistenceConfig {
 
-  /* Environment */
   @Autowired
   private Environment env;
 
@@ -37,18 +38,6 @@ public class PersistenceConfig {
     jpaTransactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
     return jpaTransactionManager;
   }
-
-
-  /**
-   * Transaction Manager.
-   *
-   * @return PlatformTransactionManager
-   */
-//  @Bean
-//  public PlatformTransactionManager transactionManager() {
-//    EntityManagerFactory factory = entityManagerFactory().getObject();
-//    return new JpaTransactionManager(factory);
-//  }
 
   private static final String PROPERTY_NAME_HIBERNATE_FORMAT_SQL = "hibernate.format_sql";
   private static final String PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY = "spring.jpa.hibernate.naming_strategy";
@@ -65,7 +54,7 @@ public class PersistenceConfig {
 
     factory.setDataSource(dataSource());
     factory.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-    factory.setPackagesToScan("cd.entities");
+    factory.setPackagesToScan("cd.model");
 
     Properties jpaProperties = new Properties();
     jpaProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
@@ -106,18 +95,4 @@ public class PersistenceConfig {
     return dataSource;
   }
 
-  /**
-   * Mevcut bir test databse için gerekli ayarlamaları yapar.
-   * @return DataSourceInitializer
-   */
- /* @Bean
-   public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
-    DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
-    dataSourceInitializer.setDataSource(dataSource);
-    ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-    databasePopulator.addScript(new ClassPathResource("db.sql"));
-    dataSourceInitializer.setDatabasePopulator(databasePopulator);
-    dataSourceInitializer.setEnabled(Boolean.parseBoolean(initDatabase));
-    return dataSourceInitializer;
-  }*/
 }

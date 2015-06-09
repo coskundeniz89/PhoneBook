@@ -1,4 +1,4 @@
-package cd.entities;
+package cd.model;
 
 
 import org.apache.commons.lang.builder.ToStringBuilder;

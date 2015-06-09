@@ -7,23 +7,15 @@ import org.springframework.core.env.Environment;
 
 
 @Configuration
-@ComponentScan(basePackages = { "cd.controller","cd.interfaces","cd.config","cd.entities" })
+@ComponentScan(basePackages = {"cd.config", "cd.services"})
 @PropertySources(value = {@PropertySource("classpath:application.properties")})
 public class AppConfig {
 
-  /* Environmnet object. */
   @Autowired
   private Environment env;
 
-  /* PropertySourcesPlaceholderConfigurer. */
   @Bean
   public static PropertySourcesPlaceholderConfigurer placeHolderConfigurer() {
     return new PropertySourcesPlaceholderConfigurer();
   }
-
-  /* @return  CacheManager */
-//  @Bean
-//  public CacheManager cacheManager() {
-//    return new ConcurrentMapCacheManager();
-//  }
 }

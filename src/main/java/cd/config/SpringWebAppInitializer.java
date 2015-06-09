@@ -22,7 +22,6 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
     return new Class<?>[]{WebMvcConfig.class};
   }
 
-
   /**
    * get Servlet Mappings.
    * @return String[]
@@ -32,14 +31,4 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
     return new String[]{"/"};
   }
 
-  /**
-   * Spring security tanımlar.
-   * @return Filter[]
-   */
-//  @Override
-//  protected Filter[] getServletFilters() {
-//    return new Filter[]{
-//        new DelegatingFilterProxy("springSecurityFilterChain"),
-//        new OpenEntityManagerInViewFilter()};
-//  }
 }

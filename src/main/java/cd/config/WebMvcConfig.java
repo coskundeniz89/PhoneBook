@@ -22,12 +22,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Properties;
 
-/**
- * @author bilal.sezgin
- */
+
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = { "cd.controller"})
+@ComponentScan(basePackages = { "cd.controller","cd.services"})
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
   /**
