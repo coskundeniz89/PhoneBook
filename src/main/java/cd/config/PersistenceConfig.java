@@ -4,33 +4,27 @@ package cd.config;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.hibernate4.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
 import java.util.Properties;
+import javax.sql.DataSource;
 
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"cd.model","cd.services"})
-@EnableJpaRepositories(basePackages = {"cd.repositories"})
+@ComponentScan(basePackages = {"cd.model"})
+//@EnableJpaRepositories(basePackages = {"cd.repositories"})
 public class PersistenceConfig {
 
   @Autowired
   private Environment env;
-
-  /* initDatabase */
-  @Value("${init-db:false}")
-  private String initDatabase;
 
   @Bean
   JpaTransactionManager jpaTransactionManager() {
@@ -62,7 +56,7 @@ public class PersistenceConfig {
     jpaProperties.put(PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY));
     jpaProperties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
     jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-    //jpaProperties.put("hibernate.default_schema", env.getProperty("hibernate.default_schema"));
+    jpaProperties.put("hibernate.default_schema", env.getProperty("hibernate.default_schema"));
     factory.setJpaProperties(jpaProperties);
 
 //    factory.afterPropertiesSet();

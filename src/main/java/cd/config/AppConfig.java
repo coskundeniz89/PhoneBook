@@ -7,7 +7,7 @@ import org.springframework.core.env.Environment;
 
 
 @Configuration
-@ComponentScan(basePackages = {"cd.config", "cd.services"})
+@ComponentScan(basePackages = {"cd.config" })
 @PropertySources(value = {@PropertySource("classpath:application.properties")})
 public class AppConfig {
 

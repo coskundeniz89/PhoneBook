@@ -10,7 +10,7 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
    */
   @Override
   protected Class<?>[] getRootConfigClasses() {
-    return new Class<?>[]{AppConfig.class,PersistenceConfig.class};
+    return new Class<?>[]{AppConfig.class};
   }
 
   /**
